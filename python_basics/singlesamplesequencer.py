@@ -1,6 +1,13 @@
 import simpleaudio as sa
 import time
 
+
+# Asks for bpm
+try:
+	bpm = float(input("Standard BPM is 100, leave empty to continue or type your own BPM"))
+except ValueError:
+	bpm = 100
+
 # Asks for playback times
 num_playback_times = int(input("How many times do you want to play the sample?"))
 
@@ -8,9 +15,6 @@ num_playback_times = int(input("How many times do you want to play the sample?")
 note_durations = []
 for i in range(num_playback_times):
 	note_durations.append(float(input("Note duration?")))
-
-# Asks for BPM
-bpm = float(input("BPM?"))
 
 # Calculates quarternote duration
 quarternote_duration = 60.0 / bpm
@@ -36,7 +40,6 @@ else:
 
 # store the current time
 time_zero = time.time()
-print("time zero:", time_zero)
 
 
 # Loads sample
@@ -53,6 +56,12 @@ while True:
 		else:
 			break
 	time.sleep(0.001)
+
+# Durations To Timestamps16th
+timestamps_16th = [0.]
+for note_dur in note_durations:
+	timestamps_16th.append(timestamps_16th[-1] + (note_dur * 4))
+print(timestamps_16th)
 
 # wait till last sample is done playing before exit
 time.sleep(time_durations[-1])
