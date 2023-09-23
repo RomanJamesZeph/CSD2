@@ -1,7 +1,6 @@
 import simpleaudio as sa
 import time
 
-
 # Asks for bpm
 try:
 	bpm = float(input("Standard BPM is 100, leave empty to continue or type your own BPM"))
@@ -16,52 +15,42 @@ note_durations = []
 for i in range(num_playback_times):
 	note_durations.append(float(input("Note duration?")))
 
-# Calculates quarternote duration
-quarternote_duration = 60.0 / bpm
+# Creates timestamps_16th list and fills it from note durations
+timestamps_16th = [0.0]
+for note_dur in note_durations:
+	timestamps_16th.append(timestamps_16th[-1] + (note_dur * 4))
+print(timestamps_16th)
 
-# Creates time durations list and fills it from note durations
-time_durations = []
-for note in note_durations:
-	time_durations.append(quarternote_duration * note)
+# Calculates sixteenth note duration
+sixteenthNoteDuration = 15.0 / bpm
 
-# Creates timestamp sequence list and fills it from time durations
-timestamp_seq = []
-sum = 0
-for time_dur in time_durations:
-    timestamp_seq.append(sum)
-    sum = sum + time_dur
+# Creates timestamps_ms list and fills it from timestamps_16th
+timestamps_ms = []
+for timestamp in timestamps_16th:
+	timestamps_ms.append(timestamp * sixteenthNoteDuration)
+print(timestamps_ms)
 
-if timestamp_seq:
-    ts = timestamp_seq.pop(0)
+# First timestamp
+if timestamps_ms:
+    ts = timestamps_ms.pop(0)
 else:
     # list contains no items
     print("no timestamps --> exit")
     exit()
 
-# store the current time
-time_zero = time.time()
-
-
 # Loads sample
 sampleBoing = sa.WaveObject.from_wave_file("/Library/Audio/Samples/Sound Kits/cartoon/boing.wav")
 
+# store the current time
+time_zero = time.time()
 
 # iterate through time sequence and play sample when time lines up with timestamp
 while True:
 	now = time.time() - time_zero
 	if (now >= ts):
 		sampleBoing.play()
-		if timestamp_seq:
-			ts = timestamp_seq.pop(0)
+		if timestamps_ms:
+			ts = timestamps_ms.pop(0)
 		else:
 			break
 	time.sleep(0.001)
-
-# Durations To Timestamps16th
-timestamps_16th = [0.]
-for note_dur in note_durations:
-	timestamps_16th.append(timestamps_16th[-1] + (note_dur * 4))
-print(timestamps_16th)
-
-# wait till last sample is done playing before exit
-time.sleep(time_durations[-1])
