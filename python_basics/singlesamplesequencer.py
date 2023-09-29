@@ -15,19 +15,26 @@ note_durations = []
 for i in range(num_playback_times):
 	note_durations.append(float(input("Note duration?")))
 
-# Creates timestamps_16th list and fills it from note durations
+# Creates timestamps_16th list
 timestamps_16th = [0.0]
-for note_dur in note_durations:
-	timestamps_16th.append(timestamps_16th[-1] + (note_dur * 4))
-print(timestamps_16th)
+
+def noteDurationsToTimestamps_16th(note_durations):
+	for note_dur in note_durations:
+		timestamps_16th.append(timestamps_16th[-1] + (note_dur * 4))
+
+noteDurationsToTimestamps_16th(note_durations)
 
 # Calculates sixteenth note duration
 sixteenthNoteDuration = 15.0 / bpm
 
-# Creates timestamps_ms list and fills it from timestamps_16th
+# Creates timestamps_ms list
 timestamps_ms = []
-for timestamp in timestamps_16th:
-	timestamps_ms.append(timestamp * sixteenthNoteDuration)
+
+def timestamps_16thToTimestamps_ms(sixteenthNoteDuration, timestamps_16th):
+	for timestamp in timestamps_16th:
+		timestamps_ms.append(timestamp * sixteenthNoteDuration)
+
+timestamps_16thToTimestamps_ms(sixteenthNoteDuration, timestamps_16th)
 print(timestamps_ms)
 
 # First timestamp
@@ -37,6 +44,7 @@ else:
     # list contains no items
     print("no timestamps --> exit")
     exit()
+print(timestamps_ms)
 
 # Loads sample
 sampleBoing = sa.WaveObject.from_wave_file("/Library/Audio/Samples/Sound Kits/cartoon/boing.wav")
@@ -49,6 +57,7 @@ while True:
 	now = time.time() - time_zero
 	if (now >= ts):
 		sampleBoing.play()
+		print(now)
 		if timestamps_ms:
 			ts = timestamps_ms.pop(0)
 		else:
