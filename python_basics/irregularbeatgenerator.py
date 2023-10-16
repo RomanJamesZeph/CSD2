@@ -1,5 +1,6 @@
 import simpleaudio as sa
 import time
+import random
 
 def defineEvents():
     hihat = sa.WaveObject.from_wave_file(
@@ -47,35 +48,58 @@ def defineEvents():
 
     return events
 
-def customInput(events):
-
+def customInput():
     # bpm input
     try:
         bpm = float(input("Standard BPM is 100, leave empty to continue or type your own BPM"))
     except ValueError:
         bpm = 100
+    
+    try:
+        measures = float(input("How many measures do you want?"))
+    except ValueError:
+        measures = 4
 
-    # note duration input
+    try:
+        timeSignature = float(input("What timesignature do you want?"))
+    except ValueError:
+        timeSignature = 4
+
+    return bpm, measures, timeSignature
+
+def rythmGeneration(events, measures):
     for event in events:
-        correctInput = False
-        while not correctInput:
-            try:
-                event_name = event['instrumentname']
-                noteDurationInput = float(input(f"Give note duration for {event_name}"))
-                event["noteDurations"].append(noteDurationInput)
-                print(event["noteDurations"])
-            except ValueError:
-                print(event['instrumentname'], "note durations:")
-                print(event["noteDurations"])
-                correctInput = True
+        num_pulses = measures
+        while num_pulses:
+            # add 2's and 3's in a random manner
+            if num_pulses >= 3:
+                dur = random.randint(2, 3)
+                num_pulses -= dur
+                event["noteDurations"].append(dur)
+            # num_pulse < 3? We can not add 3's anymore, add 2 or adapt last notes
+            else:
+                if num_pulses == 2:
+                    event["noteDurations"].append(2)
+                    num_pulses -= 2
+                elif num_pulses == 1:
+                    if event["noteDurations"][-1] == 2:
+                        # extend last note with +1
+                        event["noteDurations"][-1] += 1
+                    else: # last note is a 3, change it into a 2 and add a 2
+                        event["noteDurations"][-1] -= 1
+                        event["noteDurations"].append(2)
+                    num_pulses -= 1
+                else:
+                    print("THIS SHOULD NEVER HAPPEN! - num_pulses while loop")
+        print(event["instrumentname"], "note durations:")
+        print(event["noteDurations"])
     print("\n")
-    return bpm, events
+    return events
 
 def noteDurationToTimestamps16th(events):
     for event in events:
         for noteDuration in event["noteDurations"]:
             event["timestamps16th"].append(event["timestamps16th"][-1] + noteDuration * 4)
-            print(event["timestamps16th"])
         event["timestamps16th"].pop(0)
         print(event["instrumentname"], "timestamps in 16th:")
         print(event["timestamps16th"])
@@ -93,7 +117,6 @@ def timestamps16thToTimestampsMs(events, bpm):
     return events
 
 def allTimestampsList(events):
-# Creates a list of all timestamps from every event and sorts them
     all_timestamps = []
     for event in events:
         all_timestamps.extend(event["timestampsMs"])
@@ -135,12 +158,16 @@ def iterateThroughTimestamps(events, all_timestamps):
     time.sleep(1)
 
 def main():
-    events = defineEvents()
-    bpm, events = customInput(events)
-    events = noteDurationToTimestamps16th(events)
-    events = timestamps16thToTimestampsMs(events, bpm)
-    all_timestamps = allTimestampsList(events)
-    iterateThroughTimestamps(events, all_timestamps)
+    onOff = True;
+    while onOff:
+        events = defineEvents()
+        bpm, measures, timeSignature = customInput()
+        events = rythmGeneration(events, measures)
+        events = noteDurationToTimestamps16th(events)
+        events = timestamps16thToTimestampsMs(events, bpm)
+        all_timestamps = allTimestampsList(events)
+        iterateThroughTimestamps(events, all_timestamps)
+        onOff = input("do you want to continue? Press y and enter: ") == 'y'
 
 if __name__ == "__main__":
     main()
