@@ -2,18 +2,69 @@ import simpleaudio as sa
 import time
 import random
 
-def defineEvents():
-    hihat = sa.WaveObject.from_wave_file(
-        "/Users/romanjameszeph/HKU/Jaar2/CSD2/CSD_23-24/blok2a/assets/hihat.wav"
-        )
-    snare = sa.WaveObject.from_wave_file(
-        "/Users/romanjameszeph/HKU/Jaar2/CSD2/CSD_23-24/blok2a/assets/snare.wav"
-    )
-    kick = sa.WaveObject.from_wave_file(
-        "/Users/romanjameszeph/HKU/Jaar2/CSD2/CSD_23-24/blok2a/assets/kick.wav"
-    )
+def customInput():
+    # bpm input
+    try:
+        bpm = float(input("Standard BPM is 100, leave empty to continue or type your own BPM"))
+    except ValueError:
+        bpm = 100
+    
+    # measures input
+    try:
+        measures = float(input("How many measures do you want?"))
+    except ValueError:
+        measures = 4
 
-    hihat_event = {
+    # timesignature input
+    try:
+        time_signature_str = input("Enter the time signature (e.g., 4/4): ")
+        time_signature_parts = time_signature_str.split('/')
+        numerator = int(time_signature_parts[0])
+        denominator = int(time_signature_parts[1])
+    except (ValueError, IndexError):
+        numerator = 4
+        denominator = 4
+
+    # samples input
+    sample_options = {
+        '1': {
+            'hihat_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/acoustic_hat.wav",
+            'snare_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/acoustic_snare.wav",
+            'kick_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/acoustic_kick.wav"
+        },
+        '2': {
+            'hihat_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/lofi_hat.wav",
+            'snare_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/lofi_snare.wav",
+            'kick_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/lofi_kick.wav"
+        },
+        '3': {
+            'hihat_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/trap_hat.wav",
+            'snare_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/trap_snare.wav",
+            'kick_path': "/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/assets/trap_kick.wav"
+        }
+    }
+
+    # prompts the user to choose samples
+    user_input = ''
+    while user_input not in sample_options:
+        user_input = input("Pick an option:\n1) Acoustic\n2) Boombap\n3) Trap\nYour choice: ")
+
+    # retrieves the sample paths based on userinput
+    hihat_path = sample_options[user_input]['hihat_path']
+    snare_path = sample_options[user_input]['snare_path']
+    kick_path = sample_options[user_input]['kick_path']
+        
+
+    return bpm, measures, numerator, denominator, hihat_path, snare_path, kick_path
+
+def loadSamples(hihat_path, snare_path, kick_path):
+    hihat = sa.WaveObject.from_wave_file(hihat_path)
+    snare = sa.WaveObject.from_wave_file(snare_path)
+    kick = sa.WaveObject.from_wave_file(kick_path)
+    return hihat, snare, kick
+
+def defineTracks(hihat, snare, kick):
+    high_track = {
         "noteDurations": [],
         "timestamps16th": [0.0],
         "timestampsMs": [],
@@ -23,7 +74,7 @@ def defineEvents():
         "duration": 100,
     }
 
-    snare_event = {
+    mid_track = {
         "noteDurations": [],
         "timestamps16th": [0.0],
         "timestampsMs": [],
@@ -33,7 +84,7 @@ def defineEvents():
         "duration": 100,
     }
 
-    kick_event = {
+    low_track = {
         "noteDurations": [],
         "timestamps16th": [0.0],
         "timestampsMs": [],
@@ -43,57 +94,42 @@ def defineEvents():
         "duration": 100,
     }
 
-    # stores all events in list
-    events = [kick_event, hihat_event, snare_event]
+    # stores all tracks in events list
+    events = [high_track, mid_track, low_track]
 
     return events
 
-def customInput():
-    # bpm input
-    try:
-        bpm = float(input("Standard BPM is 100, leave empty to continue or type your own BPM"))
-    except ValueError:
-        bpm = 100
-    
-    try:
-        measures = float(input("How many measures do you want?"))
-    except ValueError:
-        measures = 4
+def rythmGeneration(events, measures, numerator, denominator):
+    # Calculate the total beats based on the time signature
+    total_beats = measures * numerator
 
-    try:
-        timeSignature = float(input("What timesignature do you want?"))
-    except ValueError:
-        timeSignature = 4
-
-    return bpm, measures, timeSignature
-
-def rythmGeneration(events, measures):
+    # Adjust note durations based on the time signature
     for event in events:
-        num_pulses = measures
-        while num_pulses:
-            # add 2's and 3's in a random manner
-            if num_pulses >= 3:
-                dur = random.randint(2, 3)
-                num_pulses -= dur
-                event["noteDurations"].append(dur)
-            # num_pulse < 3? We can not add 3's anymore, add 2 or adapt last notes
+        if event["instrumentname"] == "hihat":
+            note_durations = [0.5]
+        if event["instrumentname"] == "snare":
+            note_durations = [3]
+        if event["instrumentname"] == "kick":
+            note_durations = [1]
+
+        current_beat = 0
+
+        while current_beat < total_beats:
+            duration = random.choice(note_durations)
+
+            # Ensure that the duration does not exceed the remaining beats in the rhythm
+            if current_beat + duration <= total_beats:
+                event["noteDurations"].append(duration)
+                current_beat += duration
             else:
-                if num_pulses == 2:
-                    event["noteDurations"].append(2)
-                    num_pulses -= 2
-                elif num_pulses == 1:
-                    if event["noteDurations"][-1] == 2:
-                        # extend last note with +1
-                        event["noteDurations"][-1] += 1
-                    else: # last note is a 3, change it into a 2 and add a 2
-                        event["noteDurations"][-1] -= 1
-                        event["noteDurations"].append(2)
-                    num_pulses -= 1
-                else:
-                    print("THIS SHOULD NEVER HAPPEN! - num_pulses while loop")
-        print(event["instrumentname"], "note durations:")
+                # If the selected duration exceeds the remaining beats, select a shorter duration
+                duration = total_beats - current_beat
+                event["noteDurations"].append(duration)
+                current_beat = total_beats
+        print(event["instrumentname"], "notedurations:")
         print(event["noteDurations"])
     print("\n")
+
     return events
 
 def noteDurationToTimestamps16th(events):
@@ -124,45 +160,34 @@ def allTimestampsList(events):
     return all_timestamps
 
 def iterateThroughTimestamps(events, all_timestamps):
-    # stores current time in ms
-    current_time = time.time()
+    # Get the start time
+    time_zero = time.time()
 
-    # Initialize a dictionary to keep track of played events
-    played_events = {}
+    # Create a dictionary to keep track of played events for each timestamp
+    played_events = {ts: [] for ts in all_timestamps}
 
-    # Iterate through each timestamp and calculate time to sleep
-    for timestamp in all_timestamps:
-        time_to_sleep = timestamp - current_time
+    while all_timestamps:
+        now = time.time() - time_zero
+        ts = all_timestamps[0]
 
-        if time_to_sleep > 0:
-            time.sleep(time_to_sleep)
-
-        # Iterate through each event and check if the current timestamp is present in the timestamps list
-        for event in events:
-            if timestamp in event["timestampsMs"]:
-                event_name = event["instrumentname"]
-                
-                # Check if this event has already been played at this timestamp
-                if event_name not in played_events or timestamp not in played_events[event_name]:
-                    print(f"Current Time: {timestamp} seconds, Instrument: {event_name}")
+        if now >= ts:
+            # Find the corresponding event and play it if it hasn't been played yet
+            for event in events:
+                if ts in event["timestampsMs"] and event["instrumentname"] not in played_events[ts]:
+                    event_name = event["instrumentname"]
+                    # print(f"Current Time: {ts} seconds, Instrument: {event_name}")
                     event["instrument"].play()
-                    
-                    # Mark the event as played at this timestamp
-                    if event_name not in played_events:
-                        played_events[event_name] = set()
-                    played_events[event_name].add(timestamp)
-
-        # Update current_time to the current timestamp
-        current_time = timestamp
-
-    time.sleep(1)
+                    played_events[ts].append(event_name)
+            all_timestamps.pop(0)
+        time.sleep(0.001)
 
 def main():
     onOff = True;
     while onOff:
-        events = defineEvents()
-        bpm, measures, timeSignature = customInput()
-        events = rythmGeneration(events, measures)
+        bpm, measures, numerator, denominator, hihat_path, snare_path, kick_path = customInput()
+        hihat, snare, kick = loadSamples(hihat_path, snare_path, kick_path)
+        events = defineTracks(hihat, snare, kick)
+        events = rythmGeneration(events, measures, numerator, denominator)
         events = noteDurationToTimestamps16th(events)
         events = timestamps16thToTimestampsMs(events, bpm)
         all_timestamps = allTimestampsList(events)
