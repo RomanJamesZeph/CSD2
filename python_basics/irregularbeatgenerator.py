@@ -1,19 +1,21 @@
 import simpleaudio as sa
 import time
 import random
+import os
+from midiutil import MIDIFile
 
 def customInput():
     # bpm input
     try:
         bpm = float(input("Standard BPM is 100, leave empty to continue or type your own BPM"))
     except ValueError:
-        bpm = 100
+        bpm = 200
     
     # measures input
     try:
         measures = float(input("How many measures do you want?"))
     except ValueError:
-        measures = 4
+        measures = 2
 
     # timesignature input
     try:
@@ -44,7 +46,7 @@ def customInput():
         }
     }
 
-    # prompts the user to choose samples
+    # prompts the user to choose form the sample options
     user_input = ''
     while user_input not in sample_options:
         user_input = input("Pick an option:\n1) Acoustic\n2) Boombap\n3) Trap\nYour choice: ")
@@ -72,6 +74,8 @@ def defineTracks(hihat, snare, kick):
         "instrument": hihat,
         "velocity": 82,
         "duration": 100,
+        "midi_pitch": 41,
+        "note_offset": 0
     }
 
     mid_track = {
@@ -82,6 +86,8 @@ def defineTracks(hihat, snare, kick):
         "instrument": snare,
         "velocity": 82,
         "duration": 100,
+        "midi_pitch": 38,
+        "note_offset": 1
     }
 
     low_track = {
@@ -92,6 +98,8 @@ def defineTracks(hihat, snare, kick):
         "instrument": kick,
         "velocity": 82,
         "duration": 100,
+        "midi_pitch": 35,
+        "note_offset": 0
     }
 
     # stores all tracks in events list
@@ -100,35 +108,31 @@ def defineTracks(hihat, snare, kick):
     return events
 
 def rythmGeneration(events, measures, numerator, denominator):
-    # Calculate the total beats based on the time signature
-    total_beats = measures * numerator
-
-    # Adjust note durations based on the time signature
     for event in events:
-        if event["instrumentname"] == "hihat":
-            note_durations = [0.5]
-        if event["instrumentname"] == "snare":
-            note_durations = [3]
-        if event["instrumentname"] == "kick":
-            note_durations = [1]
-
-        current_beat = 0
-
-        while current_beat < total_beats:
-            duration = random.choice(note_durations)
-
-            # Ensure that the duration does not exceed the remaining beats in the rhythm
-            if current_beat + duration <= total_beats:
-                event["noteDurations"].append(duration)
-                current_beat += duration
+        # Adjust note durations based on the time signature
+        num_pulses = numerator * measures
+        while num_pulses:
+            # Add 2's and 3's in a random manner
+            if num_pulses >= 3:
+                dur = random.randint(2, 3)
+                num_pulses -= dur
+                event["noteDurations"].append(dur)
             else:
-                # If the selected duration exceeds the remaining beats, select a shorter duration
-                duration = total_beats - current_beat
-                event["noteDurations"].append(duration)
-                current_beat = total_beats
+                if num_pulses == 2:
+                    event["noteDurations"].append(2)
+                    num_pulses -= 2
+                elif num_pulses == 1:
+                    if event["noteDurations"][-1] == 2:
+                        event["noteDurations"][-1] += 1  # Extend the last note with +1
+                    else:
+                        event["noteDurations"][-1] -= 1  # Change the last note into a 2 and add a 2
+                        event["noteDurations"].append(2)
+                    num_pulses -= 1
+
+    for event in events:
         print(event["instrumentname"], "notedurations:")
         print(event["noteDurations"])
-    print("\n")
+        print("\n")
 
     return events
 
@@ -181,6 +185,32 @@ def iterateThroughTimestamps(events, all_timestamps):
             all_timestamps.pop(0)
         time.sleep(0.001)
 
+def durationToMidi(events, bpm):
+    # create the MIDIfile object, to which we can add notes
+    mf = MIDIFile(1)
+
+    track = 0
+    channel = 9  # corresponds to channel 10 drums
+
+    # set name and tempo
+    time_beginning = 0
+    mf.addTrackName(track, time_beginning, "Beat Sample Track")
+    mf.addTempo(track, time_beginning, bpm)
+
+    # add the notes for the different tracks
+    for event in events:
+        time = event["note_offset"]
+        for noteDuration in event["noteDurations"]:
+            mf.addNote(track, channel, event["midi_pitch"], time, noteDuration, event["velocity"])
+            # increment time based on the duration of the added note
+            time = time + noteDuration
+    
+    # specifies the output path
+    output = os.path.abspath("/Users/romanjameszeph/HKU/Jaar2/CSD2/python_basics/exports/coolrythm.midi")
+
+    with open(output,'wb') as output_file:
+        mf.writeFile(output_file)
+
 def main():
     onOff = True;
     while onOff:
@@ -192,6 +222,7 @@ def main():
         events = timestamps16thToTimestampsMs(events, bpm)
         all_timestamps = allTimestampsList(events)
         iterateThroughTimestamps(events, all_timestamps)
+        durationToMidi(events, bpm)
         onOff = input("do you want to continue? Press y and enter: ") == 'y'
 
 if __name__ == "__main__":
