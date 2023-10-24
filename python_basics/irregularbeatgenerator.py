@@ -4,26 +4,30 @@ import random
 import os
 from midiutil import MIDIFile
 
+# Function to gather user input for BPM, measures, time signature, and sample choice
 def customInput():
     # Bpm input
     try:
-        bpm = float(input("What BPM do you want? (default = 120)\nYour choice:"))
+        bpm = float(input("What BPM do you want? \nYour choice:"))
     except ValueError:
+        print("wrong input, BPM: 120")
         bpm = 120
     
     # Measures input
     try:
-        measures = int(input("How many measures do you want? (default = 4)\nYour choice:"))
+        measures = int(input("How many measures do you want? \nYour choice:"))
     except ValueError:
+        print("wrong input, measures: 4")
         measures = 4
 
     # Timesignature input
     try:
-        time_signature_str = input("What time signature do you want? (default = 4/4)\nYour choice:")
+        time_signature_str = input("What time signature do you want? \nYour choice:")
         time_signature_parts = time_signature_str.split('/')
         numerator = int(time_signature_parts[0])
         denominator = int(time_signature_parts[1])
     except (ValueError, IndexError):
+        print("wrong input, timesignature: 4/4")
         numerator = 4
         denominator = 4
 
@@ -47,8 +51,9 @@ def customInput():
     }
 
     # Prompts the user to choose from the sample options
-    sample_choice = input("Which samples do you want? (default = 1)\n1) Acoustic\n2) Lofi\n3) Trap\nYour choice: ")
+    sample_choice = input("Which samples do you want? \n1) Acoustic\n2) Lofi\n3) Trap\nYour choice: ")
     if sample_choice not in ["1", "2", "3"]:
+        print("wrong input, sample choice: 1")
         sample_choice = "1"
 
     # Retrieves the filepaths based on userinput
@@ -58,6 +63,7 @@ def customInput():
         
     return bpm, measures, numerator, denominator, hihat_path, snare_path, kick_path
 
+# Function to load audio samples from file paths
 def loadSamples(hihat_path, snare_path, kick_path):
     # Loads each samples based on file path
     hihat = sa.WaveObject.from_wave_file(hihat_path)
@@ -65,6 +71,7 @@ def loadSamples(hihat_path, snare_path, kick_path):
     kick = sa.WaveObject.from_wave_file(kick_path)
     return hihat, snare, kick
 
+# Function to define tracks for different instruments (hihat, snare, kick)
 def defineTracks(hihat, snare, kick):
     # Defines high_track dictionary
     high_track = { 
@@ -108,32 +115,34 @@ def defineTracks(hihat, snare, kick):
 
     return tracks
 
+# Function to generate the base rhythm sequence
 def baseRhythmGeneration(measures, numerator): #derived from Ciska's example
     # creates an empty list to store base sequence
     base_seq = []
 
-    # Adjust number of pulses based on the numerator times measures
-    num_pulses = numerator * measures
+    # Calculate the total number of beats based on measures and numerator
+    num_beats = numerator * measures
 
-    while num_pulses:
+    while num_beats:
         # Add 2's and 3's in a random manner
-        if num_pulses >= 3:
+        if num_beats >= 3:
             dur = random.randint(2, 3)
-            num_pulses -= dur
+            num_beats -= dur
             base_seq.append(dur)
         else:
-            if num_pulses == 2:
+            if num_beats == 2:
                 base_seq.append(2)
-                num_pulses -= 2
-            elif num_pulses == 1:
+                num_beats -= 2
+            elif num_beats == 1:
                 if base_seq[-1] == 2:
                     base_seq[-1] += 1  # Extend the last note with +1
                 else:
                     base_seq[-1] -= 1  # Change the last note into a 2 and add a 2
                     base_seq.append(2)
-                num_pulses -= 1
+                num_beats -= 1
     return base_seq
 
+# Function to fill note durations for each instrument track
 def noteDurationFiller(tracks, base_seq):
     for track in tracks:
         if track["instrumentname"] == "hihat":
@@ -158,6 +167,7 @@ def noteDurationFiller(tracks, base_seq):
 
     return tracks
 
+# Function to convert note durations to 16th note timestamps
 def noteDurationToTimestamps16th(tracks):
     # Calculate timestamps in 16th notes for each track based on note durations (times 4 to account for 16th notes)
     for track in tracks:
@@ -171,6 +181,7 @@ def noteDurationToTimestamps16th(tracks):
 
     return tracks
 
+# Function to convert 16th note timestamps to milliseconds
 def timestamps16thToTimestampsMs(tracks, bpm):
     # Calculates sixteenth note duration in miliseconds
     sixteenthNoteDuration = (60/4) / bpm
@@ -182,6 +193,7 @@ def timestamps16thToTimestampsMs(tracks, bpm):
 
     return tracks
 
+# Function to create a sorted list of all timestamps in milliseconds
 def allTimestampsList(tracks):
     # Creates an empty list to store all timestamps
     all_timestamps = []
@@ -195,11 +207,12 @@ def allTimestampsList(tracks):
 
     return all_timestamps
 
+# Function to iterate through timestamps and play the beat
 def iterateThroughTimestamps(tracks, all_timestamps): #derived from Ciska's example
     # Get the start time
     time_zero = time.time()
 
-    # Create a dictionary to keep track of played tracks for each timestamp
+    # Create a dictionary to keep track of played timestamps
     played_timestamps = {ts: [] for ts in all_timestamps}
 
     # prints "♪ Playing Your Beat ♪" to indicate to the user that the beat is playing
@@ -213,15 +226,19 @@ def iterateThroughTimestamps(tracks, all_timestamps): #derived from Ciska's exam
             # Find the corresponding timestamp and play it if it hasn't been played yet
             for track in tracks:
                 if ts in track["timestampsMs"] and track["instrumentname"] not in played_timestamps[ts]:
+                    # Find the corresponding instrument and play it
                     track_name = track["instrumentname"]
                     track["instrument"].play()
                     played_timestamps[ts].append(track_name)
+            # Remove the processed timestamp from the list
             all_timestamps.pop(0)
+        # Sleep briefly to avoid excessive CPU usage while waiting for the next timestamp
         time.sleep(0.001)
 
     # Print "Done playing your beat" to indicate to the user that the beat is done playing
     print("Done playing your beat")
 
+# Function to convert note duration data to a MIDI file
 def durationToMidi(tracks, bpm): #derived from Ciska's example
     # Create the MIDIfile object, to which we can add notes
     mf = MIDIFile(1)
@@ -248,6 +265,7 @@ def durationToMidi(tracks, bpm): #derived from Ciska's example
     # Prints output location of the created midifile
     print('Created midifile in:', output)
 
+# The main function that orchestrates the beatmaking process
 def main():
     print ("Welcome to Roman-James's Beatmaker!\n")
 
@@ -266,7 +284,10 @@ def main():
         saveToMidi = input("Do you want to save your beat to midi? Press y and enter: ") == 'y'
         if saveToMidi:
             durationToMidi(tracks, bpm)
+        else:
+            print("Didn't save your beat to midi")
         onOff = input("Do you want to create another beat? Press y and enter: ") == 'y'
+        print("Creating another beat \n")
 
     print("Quiting program...")
 
