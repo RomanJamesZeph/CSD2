@@ -108,7 +108,7 @@ def defineTracks(hihat, snare, kick):
 
     return tracks
 
-def baseRhythmGeneration(measures, numerator):
+def baseRhythmGeneration(measures, numerator): #derived from Ciska's example
     # creates an empty list to store base sequence
     base_seq = []
 
@@ -195,7 +195,7 @@ def allTimestampsList(tracks):
 
     return all_timestamps
 
-def iterateThroughTimestamps(tracks, all_timestamps):
+def iterateThroughTimestamps(tracks, all_timestamps): #derived from Ciska's example
     # Get the start time
     time_zero = time.time()
 
@@ -222,7 +222,7 @@ def iterateThroughTimestamps(tracks, all_timestamps):
     # Print "Done playing your beat" to indicate to the user that the beat is done playing
     print("Done playing your beat")
 
-def durationToMidi(tracks, bpm):
+def durationToMidi(tracks, bpm): #derived from Ciska's example
     # Create the MIDIfile object, to which we can add notes
     mf = MIDIFile(1)
 
@@ -249,9 +249,10 @@ def durationToMidi(tracks, bpm):
     print('Created midifile in:', output)
 
 def main():
+    print ("Welcome to Roman-James's Beatmaker!\n")
+
     onOff = True;
     saveToMidi = True;
-    print ("Welcome to Roman-James's Beatmaker!\n")
     while onOff:
         bpm, measures, numerator, denominator, hihat_path, snare_path, kick_path = customInput()
         hihat, snare, kick = loadSamples(hihat_path, snare_path, kick_path)
@@ -266,8 +267,8 @@ def main():
         if saveToMidi:
             durationToMidi(tracks, bpm)
         onOff = input("Do you want to create another beat? Press y and enter: ") == 'y'
-    print("Quiting program..")
 
+    print("Quiting program...")
 
 if __name__ == "__main__":
     main()
