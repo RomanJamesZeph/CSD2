@@ -6,23 +6,28 @@ class Instrument
         std::string name;
         std::string sound;
         int pitchRange;
+
     public:
         void setName(std::string name)
         {
-            this name = name;
+            this->name = name;
         }
-        
 
-        void getName()
+        std::string getName()
         {
             std::cout << "Instrument name: " << name << std::endl;
+            return name;
         }
 
-        void setPitchRange(int pitchRange);
+        void setPitchRange(int pitchRange)
+        {
+            this->pitchRange = pitchRange;
+        }
 
-        void getPitchRange()
+        int getPitchRange()
         {
             std::cout << "Pitchrange: " << pitchRange << std::endl;
+            return pitchRange;
         }
 
         void play()
@@ -35,8 +40,17 @@ class String : public Instrument
 {
     private:
         int stringAmount;
-        void setStringAmount(int stringAmount);
-        void getStringAmount();
+
+    public:
+        void setStringAmount(int stringAmount)
+        {
+            this->stringAmount = stringAmount;
+        }
+        int getStringAmount()
+        {
+            std::cout << "StringAmount: " << stringAmount << std::endl;
+            return stringAmount;
+        }
 };
 
 class Wind : public Instrument
