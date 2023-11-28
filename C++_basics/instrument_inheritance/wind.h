@@ -8,7 +8,7 @@ class Wind : public Instrument
         bool brass;
 
     public:
-        Wind(std::string sound, bool woodwinds, bool brass);
+        Wind(std::string name, int pitchRange, bool woodwinds, bool brass);
         bool getWoodwinds();
         bool getBrass();
 };

@@ -7,6 +7,6 @@ class Percussion : public Instrument
         bool melodic;
 
     public:
-        Percussion(std::string sound, bool melodic);
+        Percussion(std::string name, int pitchRange, bool melodic);
         bool getMelodic();
 };

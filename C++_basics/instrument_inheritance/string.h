@@ -7,6 +7,6 @@ class String : public Instrument
         int stringAmount;
 
     public:
-        String(std::string sound, int stringAmount);
+        String(std::string name, int pitchRange, int stringAmount);
         int getStringAmount();
 };

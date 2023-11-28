@@ -1,9 +1,10 @@
 #include <iostream>
 #include "wind.h"
 
-Wind::Wind(std::string sound, bool woodwinds, bool brass) : Instrument (sound)
+Wind::Wind(std::string name, int pitchRange, bool woodwinds, bool brass) : Instrument (name, pitchRange)
 {
-    this->sound = sound;
+    this->name = name;
+    this->pitchRange = pitchRange;
     this->woodwinds = woodwinds;
     this->brass = brass;
 }

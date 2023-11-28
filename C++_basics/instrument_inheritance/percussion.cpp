@@ -1,9 +1,10 @@
 #include <iostream>
 #include "percussion.h"
 
-Percussion::Percussion(std::string sound, bool melodic) : Instrument(sound)
+Percussion::Percussion(std::string name, int pitchRange, bool melodic) : Instrument(name, pitchRange)
 {
-    this->sound = sound;
+    this->name = name;
+    this->pitchRange = pitchRange;
     this->melodic = melodic;
 }
 

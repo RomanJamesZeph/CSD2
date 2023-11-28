@@ -5,16 +5,17 @@
 class Instrument
 {
     private:
+        std::string sound;
+    
+    protected:
         int pitchRange;
         std::string name;
 
     public:
-        Instrument(std::string sound);
-        std::string sound;
-        void setName(std::string name);
+        Instrument(std::string name, int pitchRange);
         std::string getName();
-        void setPitchRange(int pitchRange);
         int getPitchRange();
+        void setSound(std::string sound);
         void play();
 };
 
