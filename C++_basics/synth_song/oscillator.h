@@ -13,4 +13,4 @@ class Oscillator
     protected:
         float freq;
         float amp;
-}
+};
