@@ -1,16 +1,16 @@
-#ifndef SINE_H
-#define SINE_H
+#ifndef SQUARE_H
+#define SQUARE_H
 
 #include <iostream>
 #include "oscillator.h"
 
 #define SAMPLERATE 44100
 
-class Sine : public Oscillator
+class Square : public Oscillator
 {
     public:
-        Sine(float freq, float amp);
-        ~Sine();
+        Square(float freq, float amp);
+        ~Square();
         void tick();
     private:
 };

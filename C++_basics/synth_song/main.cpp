@@ -1,20 +1,48 @@
 #include <iostream>
 #include "oscillator.h"
 #include "sine.h"
+#include "square.h"
+#include "triangular.h"
 #include "writeToFile.h"
 
 int main()
 {
-    Sine sine(1, 1);
-    std::cout << "Sine frequency: " << sine.getFreq() << "\n";
-    std::cout << "Sine amplitude: " << sine.getAmp() << "\n";
+    // Sine sine(100, 1);
+    // std::cout << "Sine frequency: " << sine.getFreq() << "\n";
+    // std::cout << "Sine amplitude: " << sine.getAmp() << "\n";
 
-    WriteToFile fileWriter("output.csv", true);
-    for(int i = 0; i < SAMPLERATE; i++)
-    {
-        fileWriter.write(std::to_string(sine.getSample()) + "\n");
-        sine.tick();
-    }
-    std::cout << "File created successfully.\n";
-    return 0;
+    // WriteToFile fileWriter("output.csv", true);
+    // for(int i = 0; i < SAMPLERATE; i++)
+    // {
+    //     fileWriter.write(std::to_string(sine.getSample()) + "\n");
+    //     sine.tick();
+    // }
+    // std::cout << "File created successfully.\n";
+    // return 0;
+
+    // Square square(1, 1);
+    // std::cout << "Square frequency: " << square.getFreq() << "\n";
+    // std::cout << "Square amplitude: " << square.getAmp() << "\n";
+
+    // WriteToFile fileWriter("output.csv", true);
+    // for(int i = 0; i < SAMPLERATE; i++)
+    // {
+    //     fileWriter.write(std::to_string(square.getSample()) + "\n");
+    //     square.tick();
+    // }
+    // std::cout << "File created successfully.\n";
+    // return 0;
+
+    // Triangular triangular(100, 1);
+    // std::cout << "Triangular frequency: " << triangular.getFreq() << "\n";
+    // std::cout << "Triangular amplitude: " << triangular.getAmp() << "\n";
+
+    // WriteToFile fileWriter("output.csv", true);
+    // for(int i = 0; i < SAMPLERATE; i++)
+    // {
+    //     fileWriter.write(std::to_string(triangular.getSample()) + "\n");
+    //     triangular.tick();
+    // }
+    // std::cout << "File created successfully.\n";
+    // return 0;
 }

@@ -1,6 +1,5 @@
 #include <iostream>
 #include "sine.h"
-#pragma GCC diagnostic ignored "-Wc++11-extensions"
 
 Sine::Sine(float freq, float amp) : Oscillator(freq, amp)
 {
