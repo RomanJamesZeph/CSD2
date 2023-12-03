@@ -25,3 +25,18 @@ float Oscillator::getFreq()
 {
     return freq;
 }
+
+void Oscillator::setAmp(float amp)
+{
+    this->amp = amp;
+}
+
+float Oscillator::getAmp()
+{
+    return amp;
+}
+
+float Oscillator::getSample()
+{
+    return sample;
+}

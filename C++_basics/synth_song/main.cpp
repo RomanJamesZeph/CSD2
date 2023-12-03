@@ -5,8 +5,9 @@
 
 int main()
 {
-    Sine sine(1);
-    std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
+    Sine sine(1, 1);
+    std::cout << "Sine frequency: " << sine.getFreq() << "\n";
+    std::cout << "Sine amplitude: " << sine.getAmp() << "\n";
 
     WriteToFile fileWriter("output.csv", true);
     for(int i = 0; i < SAMPLERATE; i++)

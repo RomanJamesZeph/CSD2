@@ -2,33 +2,18 @@
 #include "sine.h"
 #pragma GCC diagnostic ignored "-Wc++11-extensions"
 
-Sine::Sine(float frequency) 
+Sine::Sine(float freq, float amp) : Oscillator(freq, amp)
 {
-    this->frequency = frequency;
+  std::cout << "Sine - constructor\n";
 }
 
 Sine::~Sine()
 {
-
-}
-
-float Sine::getSample()
-{
-    return sample;
+  std::cout << "Sine - destructor\n";
 }
 
 void Sine::tick()
 {
-    phase += frequency / SAMPLERATE;
-    sample = sin(M_PI * 2 * phase);
-}
-
-void Sine::setFrequency(float frequency)
-{
-    this->frequency = frequency;
-}
-
-float Sine::getFrequency()
-{
-    return frequency;
+    phase += freq / SAMPLERATE;
+    sample = amp * sin(M_PI * 2 * phase);
 }

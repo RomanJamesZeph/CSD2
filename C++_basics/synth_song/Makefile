@@ -1,14 +1,21 @@
-synth: writeToFile.o sine.o main.o
-	g++ writeToFile.o sine.o main.o -o synth
+# Makefile changed to C++11 standards using CHATGPT
+
+CXXFLAGS = -std=c++11 -Wall -Wextra
+
+synth: writeToFile.o oscillator.o sine.o main.o
+	g++ $^ -o $@
 
 writeToFile.o: writeToFile.cpp
-	g++ -c writeToFile.cpp
+	g++ $(CXXFLAGS) -c $<
+
+oscillator.o: oscillator.cpp
+	g++ $(CXXFLAGS) -c $<
 
 sine.o: sine.cpp
-	g++ -c sine.cpp
+	g++ $(CXXFLAGS) -c $<
 
 main.o: main.cpp
-	g++ -c main.cpp
+	g++ $(CXXFLAGS) -c $<
 
 clean:
-	rm *.0 math
+	rm -f *.o synth

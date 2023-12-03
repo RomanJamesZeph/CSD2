@@ -1,28 +1,17 @@
 #ifndef _SINE_H_
 #define _SINE_H_
 #include <iostream>
-#pragma GCC diagnostic ignored "-Wc++11-extensions"
+#include "oscillator.h"
 
 #define SAMPLERATE 44100
 
-class Sine
+class Sine : public Oscillator
 {
     public:
-        Sine(float frequency);
+        Sine(float freq, float amp);
         ~Sine();
-
-        float getSample();
-
         void tick();
-
-        void setFrequency(float frequency);
-
-        float getFrequency();
-
     private:
-        float frequency;
-        float phase = 0;
-        float sample = 0;
 };
 
 #endif
