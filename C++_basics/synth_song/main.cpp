@@ -1,24 +1,27 @@
 #include <iostream>
+#include <thread>
+#include "jack_module.h"
+#include "math.h"
 #include "oscillator.h"
 #include "sine.h"
 #include "square.h"
-#include "triangular.h"
+#include "triangle.h"
 #include "writeToFile.h"
 
 int main()
 {
-    // Sine sine(100, 1);
-    // std::cout << "Sine frequency: " << sine.getFreq() << "\n";
-    // std::cout << "Sine amplitude: " << sine.getAmp() << "\n";
+    Sine sine(100, 1);
+    std::cout << "Sine frequency: " << sine.getFreq() << "\n";
+    std::cout << "Sine amplitude: " << sine.getAmp() << "\n";
 
-    // WriteToFile fileWriter("output.csv", true);
-    // for(int i = 0; i < SAMPLERATE; i++)
-    // {
-    //     fileWriter.write(std::to_string(sine.getSample()) + "\n");
-    //     sine.tick();
-    // }
-    // std::cout << "File created successfully.\n";
-    // return 0;
+    WriteToFile fileWriter("output.csv", true);
+    for(int i = 0; i < SAMPLERATE; i++)
+    {
+        fileWriter.write(std::to_string(sine.getSample()) + "\n");
+        sine.tick();
+    }
+    std::cout << "File created successfully.\n";
+    return 0;
 
     // Square square(1, 1);
     // std::cout << "Square frequency: " << square.getFreq() << "\n";
@@ -33,15 +36,15 @@ int main()
     // std::cout << "File created successfully.\n";
     // return 0;
 
-    // Triangular triangular(100, 1);
-    // std::cout << "Triangular frequency: " << triangular.getFreq() << "\n";
-    // std::cout << "Triangular amplitude: " << triangular.getAmp() << "\n";
+    // Triangle triangle(100, 1);
+    // std::cout << "Triangle frequency: " << triangle.getFreq() << "\n";
+    // std::cout << "Triangle amplitude: " << triangle.getAmp() << "\n";
 
     // WriteToFile fileWriter("output.csv", true);
     // for(int i = 0; i < SAMPLERATE; i++)
     // {
-    //     fileWriter.write(std::to_string(triangular.getSample()) + "\n");
-    //     triangular.tick();
+    //     fileWriter.write(std::to_string(triangle.getSample()) + "\n");
+    //     triangle.tick();
     // }
     // std::cout << "File created successfully.\n";
     // return 0;

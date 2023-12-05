@@ -11,6 +11,7 @@ Square::~Square()
   std::cout << "Square - destructor\n";
 }
 
+// CHATGPT used to create Square tick function
 void Square::tick()
 {
     phase += freq / SAMPLERATE;
