@@ -40,3 +40,10 @@ float Oscillator::getSample()
 {
     return sample;
 }
+
+void Oscillator::tick()
+{
+    phase += freq / SAMPLERATE;
+    if(phase >1) phase -= 1.0;
+    calculate();
+}

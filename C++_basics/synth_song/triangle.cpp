@@ -11,9 +11,8 @@ Triangle::~Triangle()
   std::cout << "Triangle - destructor\n";
 }
 
-// CHATGPT used to create triangle tick function
-void Triangle::tick()
+// CHATGPT used to create triangle calculate function
+void Triangle::calculate()
 {
-    phase += freq / SAMPLERATE;
     sample = 2 * amp * (phase - floor(phase + 0.5));
 }

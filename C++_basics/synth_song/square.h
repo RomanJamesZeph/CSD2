@@ -4,14 +4,12 @@
 #include <iostream>
 #include "oscillator.h"
 
-#define SAMPLERATE 44100
-
 class Square : public Oscillator
 {
     public:
         Square(float freq, float amp);
         ~Square();
-        void tick();
+        void calculate();
     private:
 };
 

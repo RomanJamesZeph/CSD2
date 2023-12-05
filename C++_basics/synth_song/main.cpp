@@ -1,6 +1,6 @@
 #include <iostream>
 #include <thread>
-#include "jack_module.h"
+// #include "jack_module.h"
 #include "math.h"
 #include "oscillator.h"
 #include "sine.h"
@@ -10,7 +10,7 @@
 
 int main()
 {
-    Sine sine(100, 1);
+    Sine sine(1, 1);
     std::cout << "Sine frequency: " << sine.getFreq() << "\n";
     std::cout << "Sine amplitude: " << sine.getAmp() << "\n";
 

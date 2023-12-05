@@ -2,7 +2,7 @@
 
 CXXFLAGS = -std=c++11 -Wall -Wextra
 
-synth: main.o sine.o square.o triangular.o oscillator.o writeToFile.o
+synth: main.o sine.o square.o triangle.o oscillator.o writeToFile.o
 	g++ $^ -o $@
 
 main.o: main.cpp
@@ -14,7 +14,7 @@ sine.o: sine.cpp
 square.o: square.cpp
 	g++ $(CXXFLAGS) -c $<
 
-triangular.o: triangular.cpp
+triangle.o: triangle.cpp
 	g++ $(CXXFLAGS) -c $<
 
 oscillator.o: oscillator.cpp

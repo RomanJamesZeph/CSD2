@@ -1,6 +1,7 @@
 #ifndef _OSCILLATOR_H_
 #define _OSCILLATOR_H_
 #include <iostream>
+#define SAMPLERATE 44100
 
 class Oscillator
 {
@@ -14,6 +15,8 @@ class Oscillator
         void setAmp(float amp);
         float getAmp();
         float getSample();
+        void tick();
+        virtual void calculate() = 0;
 
     protected:
         float freq;
