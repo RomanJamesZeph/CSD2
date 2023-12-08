@@ -1,7 +1,7 @@
 #include <iostream>
 #include "triangle.h"
 
-Triangle::Triangle(float freq, float amp) : Oscillator(freq, amp)
+Triangle::Triangle(float freq, float amp, float samplerate) : Oscillator(freq, amp, samplerate)
 {
   std::cout << "Triangle - constructor\n";
 }

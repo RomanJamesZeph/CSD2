@@ -6,7 +6,7 @@
 class Sine : public Oscillator
 {
     public:
-        Sine(float freq, float amp);
+        Sine(float freq, float amp, float samplerate);
         ~Sine();
         void calculate();
     private:

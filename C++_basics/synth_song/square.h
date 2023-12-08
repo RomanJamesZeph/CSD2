@@ -7,7 +7,7 @@
 class Square : public Oscillator
 {
     public:
-        Square(float freq, float amp);
+        Square(float freq, float amp, float samplerate);
         ~Square();
         void calculate();
     private:

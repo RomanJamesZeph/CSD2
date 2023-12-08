@@ -7,7 +7,7 @@
 class Triangle : public Oscillator
 {
     public:
-        Triangle(float freq, float amp);
+        Triangle(float freq, float amp, float samplerate);
         ~Triangle();
         void calculate();
     private:

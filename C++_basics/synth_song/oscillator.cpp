@@ -1,12 +1,12 @@
 #include <iostream>
 #include "oscillator.h"
 
-Oscillator::Oscillator() : Oscillator (220, 0) //default values
+Oscillator::Oscillator() : Oscillator (220, 0, 44100) //default values
 {
 
 }
 
-Oscillator::Oscillator(float freq, float amp) : freq(freq), amp(amp)
+Oscillator::Oscillator(float freq, float amp, float samplerate) : freq(freq), amp(amp), samplerate(samplerate)
 {
 
 }
@@ -43,7 +43,17 @@ float Oscillator::getSample()
 
 void Oscillator::tick()
 {
-    phase += freq / SAMPLERATE;
-    if(phase >1) phase -= 1.0;
+    phase += freq / samplerate;
+    if(phase > 1) phase -= 1.0;
     calculate();
+}
+
+void Oscillator::setSamplerate(float samplerate) 
+{
+    this -> samplerate = samplerate;
+}
+
+float Oscillator::getSamplerate()
+{
+    return samplerate;
 }

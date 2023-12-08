@@ -1,13 +1,12 @@
 #ifndef _OSCILLATOR_H_
 #define _OSCILLATOR_H_
 #include <iostream>
-#define SAMPLERATE 44100
 
 class Oscillator
 {
     public:
         Oscillator();
-        Oscillator(float freq, float amp);
+        Oscillator(float freq, float amp, float samplerate = 44100);
         ~Oscillator();
 
         void setFreq(float freq);
@@ -17,12 +16,15 @@ class Oscillator
         float getSample();
         void tick();
         virtual void calculate() = 0;
+        void setSamplerate(float samplerate);
+        float getSamplerate();
 
     protected:
         float freq;
         float amp;
         float phase = 0;
         float sample = 0;
+        float samplerate;
 };
 
 #endif

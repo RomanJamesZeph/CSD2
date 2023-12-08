@@ -1,28 +1,14 @@
-# Makefile changed to C++11 standards using CHATGPT
+CXX= g++
+CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
+LDFLAGS= -ljack
+SOURCE=callback.o audioToFile.o square.o sine.o triangle.o oscillator.o main.o
+TARGET=example
 
-CXXFLAGS = -std=c++11 -Wall -Wextra
+$(TARGET) : $(SOURCE)
+	$(CXX) -o $@ $(SOURCE) $(LDFLAGS)
 
-synth: main.o sine.o square.o triangle.o oscillator.o writeToFile.o
-	g++ $^ -o $@
-
-main.o: main.cpp
-	g++ $(CXXFLAGS) -c $<
-
-sine.o: sine.cpp
-	g++ $(CXXFLAGS) -c $<
-
-square.o: square.cpp
-	g++ $(CXXFLAGS) -c $<
-
-triangle.o: triangle.cpp
-	g++ $(CXXFLAGS) -c $<
-
-oscillator.o: oscillator.cpp
-	g++ $(CXXFLAGS) -c $<
-
-writeToFile.o: writeToFile.cpp
-	g++ $(CXXFLAGS) -c $<
+.cpp.o:
+	$(CXX) -c $< $(CXXFLAGS)
 
 clean:
-	rm -f *.o synth
-
+	rm -f $(TARGET) *.o *.csv

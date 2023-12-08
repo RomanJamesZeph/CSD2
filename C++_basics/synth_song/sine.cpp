@@ -1,7 +1,7 @@
 #include <iostream>
 #include "sine.h"
 
-Sine::Sine(float freq, float amp) : Oscillator(freq, amp)
+Sine::Sine(float freq, float amp, float samplerate) : Oscillator(freq, amp, samplerate)
 {
   std::cout << "Sine - constructor\n";
 }
