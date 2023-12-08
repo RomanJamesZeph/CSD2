@@ -10,18 +10,28 @@
 #include "callback.h"
 #include "jack_module.h"
 
-int main()
-{
-    Sine sine(1, 1, 44100);
-    std::cout << "Sine frequency: " << sine.getFreq() << "\n";
-    std::cout << "Sine amplitude: " << sine.getAmp() << "\n";
+#define WRITE_TO_FILE 1
 
-    WriteToFile fileWriter("output.csv", true);
-    for(int i = 0; i < sine.getSamplerate(); i++)
-    {
-        fileWriter.write(std::to_string(sine.getSample()) + "\n");
-        sine.tick();
+
+int main(int argc, char **argv) {
+  auto callback = CustomCallback{};
+  auto jackModule = JackModule{callback};
+
+#if WRITE_TO_FILE
+  AudioToFile audioToFile;
+  audioToFile.write(callback);
+#else
+
+  jackModule.init(0, 1);
+
+  bool running = true;
+  while (running) {
+    switch (std::cin.get()) {
+      case 'q':
+        running = false;
     }
-    std::cout << "File created successfully.\n";
-    return 0;
-}
+  }
+#endif
+  //end the program
+  return 0;
+} // main()

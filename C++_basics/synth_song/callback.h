@@ -13,8 +13,8 @@ public:
   void process(AudioBuffer buffer) override;
 
 private:
-  float samplerate = 44100;
-  Sine sine = Sine(220, 1, samplerate);
+  float samplerate = 400;
+  Sine sine = Sine(200, 1, samplerate);
 };
 
 #endif //CALLBACK_H
