@@ -2,56 +2,75 @@
 #include "synth.h"
 
 Synth::Synth(float freq, float amp, float samplerate)
+
 {
-  std::cout << "Synth - constructor\n";
+    oscillatorBank[0] = new Triangle(300, 1, 44100);
+    oscillatorBank[1] = new Sine(500, 1, 44100);
+    std::cout << "Synth - constructor\n";
 }
 
 Synth::~Synth()
 {
-  std::cout << "Synth - deconstructor\n";
+    delete oscillatorBank[0];
+    delete oscillatorBank[1];
+    std::cout << "Synth - deconstructor\n";
 }
 
 void Synth::setFreq(float freq)
 {
-    osc->setFreq(freq);
+    for (int i = 0; i < 2; ++i) {
+        oscillatorBank[i]->setFreq(freq);
+    }
 }
 
 float Synth::getFreq()
 {
-    return osc->getFreq();
+    return oscillatorBank[0]->getFreq();
 }
 
 void Synth::setAmp(float amp)
 {
-    osc->setAmp(amp);
+    for (int i = 0; i < 2; ++i) {
+        oscillatorBank[i]->setAmp(amp);
+    }
 }
 
 float Synth::getAmp()
 {
-    return osc->getAmp();
+    return oscillatorBank[0]->getAmp();
 }
 
 float Synth::getSample()
 {
-    return osc->getSample();
+    float sample = 0.0f;
+    for (int i = 0; i < 2; ++i) {
+        sample += oscillatorBank[i]->getSample();
+    }
+    return sample;
 }
 
 void Synth::tick()
 {
-    osc->tick();
+    for (int i = 0; i < 2; ++i) {
+        oscillatorBank[i]->tick();
+    }
 }
 
 void Synth::calculate()
 {
-    osc->calculate();
+    for (int i = 0; i < 2; ++i) {
+        oscillatorBank[i]->calculate();
+    }
 }
 
 void Synth::setSamplerate(float samplerate)
 {
-    osc->setSamplerate(samplerate);
+    for (int i = 0; i < 2; ++i) {
+        oscillatorBank[i]->setSamplerate(samplerate);
+    }
 }
 
 float Synth::getSamplerate()
 {
-    return osc->getSamplerate();
+    return oscillatorBank[0]->getSamplerate();
 }
