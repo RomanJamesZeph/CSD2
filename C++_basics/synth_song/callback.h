@@ -2,6 +2,7 @@
 #define CALLBACK_H
 
 #include "jack_module.h"
+#include "synth.h"
 #include "oscillator.h"
 #include "sine.h"
 #include "triangle.h"
@@ -14,7 +15,7 @@ public:
 
 private:
   float samplerate = 400;
-  Sine sine = Sine(200, 1, samplerate);
+  Synth synth = Synth(200, 1, samplerate);
 };
 
 #endif //CALLBACK_H
