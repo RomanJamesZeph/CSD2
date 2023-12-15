@@ -22,7 +22,7 @@ class Synth
         void setSamplerate(float samplerate);
         float getSamplerate();
     private:
-        Sine osc;
+        Oscillator* osc = new Square(1000, 1, 44100);
 };
 
 #endif
