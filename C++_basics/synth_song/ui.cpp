@@ -32,6 +32,7 @@ int UI::retrieveUserSelection(std::string selectionOptions[], int numOptions)
         {
 		      return i;
 	      }
+        // if the selection is empty choose a random selection
         else if(selection.empty())
         {
           int randomSelection = rand() % numOptions;
@@ -47,29 +48,39 @@ int UI::retrieveUserSelection(std::string selectionOptions[], int numOptions)
 } // retrieveUserSelection()
 
 
-float UI::retrieveValueInRange(float min, float max)
+float UI::retrieveValueInRange(std::string name, float min, float max)
 {
   std::string input;
   float value = 0;
   bool notInRange = true;
 
   while(notInRange) {
-    std::cout << "Please enter a value between " << min << " and " << max
-      << std::endl;
-    // first capture input in input string
-    std::cin >> input;
+    std::cout << "Please enter a " << name << " value between " << min << " and " << max << " (leave empty for random)." << std::endl;
+    std::getline(std::cin, input);
+    
+    // if the input is empty choose a random value
+    if (input.empty())
+    {
+      // formula to create random floating-point number in the range [min, max] created using ChatGPT
+      float value = min + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max - min)));
+      return value;
+    }
     // validate if input string can be transformed into a float
-    try {
+    else try {
       value = std::stof(input);
       // validate range
-      if(value >= min && value <= max) {
+      if(value >= min && value <= max) 
+      {
         notInRange = false;
-      } else {
+      } 
+      else 
+      {
         // value not in range
         std::cout << "Value out of range, please try again." << std::endl;
       }
     }
-    catch (const std::exception& e) {
+    catch (const std::exception& e) 
+    {
       // no float as input
       std::cout << "Invalid input, expecting a number."
         << std::endl;

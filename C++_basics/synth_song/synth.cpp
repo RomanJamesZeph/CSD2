@@ -1,21 +1,27 @@
 #include <iostream>
 #include "synth.h"
 
+// synth constructor
 Synth::Synth(int numOscillators) : numOscillators(numOscillators)
 {
+    // Creates pointers to oscillators in oscillator bank
     oscillatorBank = new Oscillator* [numOscillators];
     std::cout << "Synth - constructor\n";
 }
 
+// synth deconstructor
 Synth::~Synth()
 {
+    // deletes oscillators in oscillator Bank
     for (int i = 0; i < numOscillators; ++i) {
         delete oscillatorBank[i];
     }
+    // deletes oscillator Bank
     delete[] oscillatorBank;
     std::cout << "Synth - deconstructor\n";
 }
 
+// method to add different oscillators to the oscillator bank
 void Synth::addOscillator(int index, std::string waveType, float freq, float amp, float samplerate)
 {
     if (waveType == "sine")
@@ -35,6 +41,7 @@ void Synth::addOscillator(int index, std::string waveType, float freq, float amp
     }
 }
 
+// method to set frequenty for each oscillator in oscillator bank
 void Synth::setFreq(float freq)
 {
     for (int i = 0; i < numOscillators; ++i) {
@@ -43,6 +50,7 @@ void Synth::setFreq(float freq)
     }
 }
 
+// method to get sample for each oscillator in oscillator bank
 float Synth::getSample()
 {
     float sample = 0.0f;
@@ -53,18 +61,11 @@ float Synth::getSample()
     return sample;
 }
 
+// method to go to the next sample for each oscillator in the oscillator bank
 void Synth::tick()
 {
     for (int i = 0; i < numOscillators; ++i) {
         oscillatorBank[i]->tick();
         // std::cout << "Synth - ticking\n";
-    }
-}
-
-void Synth::setSamplerate(float samplerate)
-{
-    for (int i = 0; i < numOscillators; ++i) {
-        oscillatorBank[i]->setSamplerate(samplerate);
-        std::cout << "Synth - setting samplerate\n";
     }
 }

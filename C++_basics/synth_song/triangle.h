@@ -7,8 +7,10 @@
 class Triangle : public Oscillator
 {
     public:
+        // constructor and deconstructor
         Triangle(float freq, float amp, float samplerate);
         ~Triangle();
+        
         void calculate();
     private:
 };

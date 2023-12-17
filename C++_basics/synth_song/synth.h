@@ -10,15 +10,25 @@
 class Synth
 {
     public:
+        // constructor and deconstructor
         Synth (int numOsc);
         ~Synth();
+
+        // adds an oscillator to the osccilator bank
         void addOscillator(int index, std::string waveType, float freq, float amp, float samplerate);
+
+        //getters and setters
         void setFreq(float freq);
         float getSample();
+
+        // go to next sample
         void tick();
-        void setSamplerate(float samplerate);
+        
     protected:
+        // number of oscillators
         int numOscillators;
+
+        // creates an oscillator bank to store oscillators
         Oscillator** oscillatorBank;
 };
 

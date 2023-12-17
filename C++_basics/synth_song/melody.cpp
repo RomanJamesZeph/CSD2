@@ -1,12 +1,16 @@
 #include "melody.h"
 
+// Melody Constructor
 Melody::Melody()
-{}
+{
 
+}
+
+// Melody deconstructor
 Melody::~Melody()
-{}
+{
 
-
+}
 /*
  * getNote() reads the next note from the melody
  *  and wraps around to the beginning when it reached the end

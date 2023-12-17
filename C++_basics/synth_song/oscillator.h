@@ -5,18 +5,23 @@
 class Oscillator
 {
     public:
-        // Oscillator();
+        //constructor and deconstructor:
+        Oscillator();
         Oscillator(float freq, float amp, float samplerate = 44100);
         virtual ~Oscillator();
+
+        // setter and getters:
         void setFreq(float freq);
         float getFreq();
         void setAmp(float amp);
         float getAmp();
         float getSample();
+
+        // tick method:
         void tick();
+
+        // calculate method (gets skipped):
         virtual void calculate() = 0;
-        void setSamplerate(float samplerate);
-        float getSamplerate();
 
     protected:
         float freq;

@@ -2,10 +2,12 @@
 #define _ADDITIVESYNTH_H_
 #include "synth.h"
 
-class AdditiveSynth : public Synth {
-public:
-    AdditiveSynth(int numOscillators);
-    ~AdditiveSynth();
+class AdditiveSynth : public Synth 
+{
+    public:
+        // constructor and deconstructor
+        AdditiveSynth(int numOscillators);
+        ~AdditiveSynth();
 };
 
 #endif
