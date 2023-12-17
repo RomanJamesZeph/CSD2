@@ -5,10 +5,9 @@
 class Oscillator
 {
     public:
-        Oscillator();
+        // Oscillator();
         Oscillator(float freq, float amp, float samplerate = 44100);
         virtual ~Oscillator();
-
         void setFreq(float freq);
         float getFreq();
         void setAmp(float amp);

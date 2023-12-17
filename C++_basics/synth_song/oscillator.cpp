@@ -1,14 +1,14 @@
 #include <iostream>
 #include "oscillator.h"
 
-Oscillator::Oscillator() : Oscillator (220, 0, 44100) //default values
-{
+// Oscillator::Oscillator() : Oscillator (600, 0, 44100) //default values
+// {
 
-}
+// }
 
 Oscillator::Oscillator(float freq, float amp, float samplerate) : freq(freq), amp(amp), samplerate(samplerate)
 {
-
+    std::cout << "Oscillator - constructor\n";
 }
 
 Oscillator::~Oscillator()

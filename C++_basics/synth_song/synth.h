@@ -5,24 +5,21 @@
 #include "sine.h"
 #include "triangle.h"
 #include "square.h"
+#include "ui.h"
 
 class Synth
 {
     public:
-        Synth(float freq, float amp, float samplerate = 44100);
+        Synth (std::string type, int numOsc, float freq = 400, float amp = 1, float samplerate = 44100);
         ~Synth(); 
-
         void setFreq(float freq);
-        float getFreq();
-        void setAmp(float amp);
-        float getAmp();
         float getSample();
         void tick();
-        void calculate();
         void setSamplerate(float samplerate);
-        float getSamplerate();
-    private:
-        Oscillator* oscillatorBank[2];
+    protected:
+        std::string type;
+        int numOscillators;
+        Oscillator** oscillatorBank;
 };
 
 #endif
