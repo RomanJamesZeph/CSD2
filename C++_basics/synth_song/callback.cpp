@@ -1,7 +1,12 @@
 #include "callback.h"
 
-CustomCallback::CustomCallback()
+CustomCallback::CustomCallback() : mySynth(numberOscillators)
 {
+  for (int i = 0; i < numberOscillators; ++i) {
+    int waveTypeSelection = console_ui.retrieveUserSelection(waveFormOptions,numWaveFormOptions);
+    std::string waveType = waveFormOptions[waveTypeSelection];
+    mySynth.addOscillator(i, waveType, 100, amplitude, samplerate);
+  }
   std::cout << "CustomCallback - constructor\n";
 }
 
@@ -15,7 +20,6 @@ double CustomCallback::mtof(float mPitch)
   return 440.0 * pow(2.0, (mPitch - 69.0f)/12.0f);
 }
 
-
 void CustomCallback::updatePitch(Melody& melody, Synth& mySynth) {
   float note = melody.getNote();
   double freq = mtof(note);
@@ -27,7 +31,7 @@ void CustomCallback::prepare(int rate)
 {
   samplerate = (float) rate;
   mySynth.setSamplerate(samplerate);
-  updatePitch(melody,mySynth);
+  updatePitch(melody, mySynth);
   std::cout << "\nsamplerate: " << samplerate << "\n";
 }
 

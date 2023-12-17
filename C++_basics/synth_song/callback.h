@@ -10,6 +10,7 @@
 #include "melody.h"
 #include "additivesynth.h"
 #include "fmsynth.h"
+#include "ui.h"
 
 class CustomCallback : public AudioCallback 
 {
@@ -23,13 +24,14 @@ class CustomCallback : public AudioCallback
 
   private:
     float samplerate = 44100;
-    int numberOscillators = 1;
-    std::string type = "random";
+    int numberOscillators = 4;
     float amplitude = 0.5;
     int frameIndex = 0;
-    double noteDelayFactor=0.05;
-    AdditiveSynth mySynth = AdditiveSynth(type, numberOscillators, 500, amplitude, samplerate);
-    // FMSynth mySynth = FMSynth(type, numberOscillators, 500, amplitude, samplerate);
+    double noteDelayFactor = 0.05;
+    std::string waveFormOptions[3] = {"sine", "square", "triangle"};
+    int numWaveFormOptions = 3;
+    UI console_ui;
+    AdditiveSynth mySynth;
     Melody melody;
 };
 

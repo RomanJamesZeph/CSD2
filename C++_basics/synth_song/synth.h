@@ -10,14 +10,14 @@
 class Synth
 {
     public:
-        Synth (std::string type, int numOsc, float freq = 400, float amp = 1, float samplerate = 44100);
-        ~Synth(); 
+        Synth (int numOsc);
+        ~Synth();
+        void addOscillator(int index, std::string waveType, float freq, float amp, float samplerate);
         void setFreq(float freq);
         float getSample();
         void tick();
         void setSamplerate(float samplerate);
     protected:
-        std::string type;
         int numOscillators;
         Oscillator** oscillatorBank;
 };

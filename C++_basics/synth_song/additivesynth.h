@@ -4,7 +4,7 @@
 
 class AdditiveSynth : public Synth {
 public:
-    AdditiveSynth(std::string type, int numOscillators, float freq, float amp, float samplerate = 44100);
+    AdditiveSynth(int numOscillators);
     ~AdditiveSynth();
 };
 
