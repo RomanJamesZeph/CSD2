@@ -1,6 +1,6 @@
 CSD2B Synth Song, Persoonlijke reflectie
 Al snel kwam ik erachter dat ik moeite zou hebben met C++ dus ik heb geprobeerd de eindopracht zo hapbaar mogelijk te maken. Ik heb wekelijks de sessie voorbeelden onderzocht en het huiswerk gemaakt maar moest uiteindelijk nog steeds het laatste weekend blokken op de opdracht af te krijgen.
 Het leren van C++ was mijn main focus dit blok. Ik heb aanzienlijk veel geleerd, vooral over de basisconcepten van C++. Hoewel mijn kennis van C++ is gegroeid, realiseer ik me dat er nog heel veel te leren valt.
-Over mijn eindoplevering ben ik met gemengde gevoelens. Enerzijds ben ik trots dat ik de opdracht heb voltooid. Anderzijds ben ik niet volledig tevreden met het eindresultaat. Als ik meer tijd had gehad, zou ik graag de audiofile-class verbeteren en de melody-class uitbreiden.
+Over mijn eindopdracht oplevering heb ik gemengde gevoelens. Enerzijds ben ik trots dat ik de opdracht heb voltooid. Anderzijds ben ik niet volledig tevreden met het eindresultaat. Als ik meer tijd had gehad, zou ik graag de audiofile-class verbeteren en de melody-class uitbreiden.
 Een belangrijke les die ik meeneem naar het volgende blok is het belang van een goed uitgewerkte planning en voorbereiding. Ik ben van plan om voortaan eerst een duidelijk diagram te maken voordat ik begin met programmeren. Ik had namelijk erg vaak dat ik vast liep omdat ik niet eerst de tijd nam om mijn idee uit te werken.
 Ik schat dat ik ongeveer 12 uur per week aan dit project heb gewerkt, dus in totaal =  72 uur.
