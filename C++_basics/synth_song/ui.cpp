@@ -18,7 +18,6 @@ std::string UI::retrieveUserInput(std::string selectionOptions[], int numOptions
 
 int UI::retrieveUserSelection(std::string selectionOptions[], int numOptions)
 {
-  srand(time(0)); 
   std::string selection = "";
   while(true) 
   {
@@ -35,14 +34,14 @@ int UI::retrieveUserSelection(std::string selectionOptions[], int numOptions)
         // if the selection is empty choose a random selection
         else if(selection.empty())
         {
+          srand(time(0)); 
           int randomSelection = rand() % numOptions;
-
           return randomSelection;
         }
 	    }
   // if we end up here, this means the selection is not correct,
-	// so log a message to user to try again
-  std::cout << "Incorrect selection, please try again";
+  // so log a message to user to try again
+  std::cout << "Incorrect selection, please try again"  << std::endl;
   } // while
   return -1; // should never be reached
 } // retrieveUserSelection()

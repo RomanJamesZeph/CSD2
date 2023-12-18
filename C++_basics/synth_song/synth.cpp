@@ -6,7 +6,7 @@ Synth::Synth(int numOscillators) : numOscillators(numOscillators)
 {
     // Creates pointers to oscillators in oscillator bank
     oscillatorBank = new Oscillator* [numOscillators];
-    std::cout << "Synth - constructor\n";
+    // std::cout << "Synth - constructor\n";
 }
 
 // synth deconstructor
@@ -18,27 +18,26 @@ Synth::~Synth()
     }
     // deletes oscillator Bank
     delete[] oscillatorBank;
-    std::cout << "Synth - deconstructor\n";
+    // std::cout << "Synth - deconstructor\n";
 }
 
-// method to add different oscillators to the oscillator bank
+// method to add different waveforms to the oscillator bank
 void Synth::addOscillator(int index, std::string waveType, float freq, float amp, float samplerate)
 {
     if (waveType == "sine")
     {
         oscillatorBank[index] = new Sine (freq, amp, samplerate);
-        std::cout << "added new sine with freq: " << freq << std::endl;
     }
     else if (waveType == "square")
     {
         oscillatorBank[index] = new Square (freq, amp, samplerate);
-        std::cout << "added new square with freq " << freq << std::endl;
     }
     else if (waveType == "triangle")
     {
         oscillatorBank[index] = new Triangle (freq, amp, samplerate);
-        std::cout << "added new triangle with freq: " << freq << std::endl;
     }
+    std::cout << "added " << waveType << " with freq: " << freq << " and amp: " << amp << std::endl;
+    std::cout << std::endl;
 }
 
 // method to set frequenty for each oscillator in oscillator bank
@@ -56,7 +55,7 @@ float Synth::getSample()
     float sample = 0.0f;
     for (int i = 0; i < numOscillators; ++i) {
         sample += oscillatorBank[i]->getSample();
-        // std::cout << "Synth - getting sample\n";
+        std::cout << "Synth - getting sample\n";
     }
     return sample;
 }

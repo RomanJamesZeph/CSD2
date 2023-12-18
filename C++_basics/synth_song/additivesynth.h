@@ -6,8 +6,12 @@ class AdditiveSynth : public Synth
 {
     public:
         // constructor and deconstructor
-        AdditiveSynth(int numOscillators);
+        AdditiveSynth(int numPartials);
         ~AdditiveSynth();
+        float getSample();
+        
+    private:
+        
 };
 
 #endif

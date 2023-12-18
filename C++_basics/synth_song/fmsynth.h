@@ -1,23 +1,26 @@
-#ifndef _FMSYNTH_H_
-#define _FMSYNTH_H_
+#ifndef _FM_SYNTH_H_
+#define _FM_SYNTH_H_
+
 #include "synth.h"
 
-// chatGPT used to create frequenty modulation variables
-
-class FMSynth : public Synth 
+class FMSynth : public Synth
 {
     public:
-        FMSynth(std::string type, int numOsc, float freq, float amp, float samplerate = 44100);
+        // Constructor and destructor
+        FMSynth(int numCarriers, int numModulators);
         ~FMSynth();
-        void calculate();
-        void setModulationIndex(float modulationIndex);
-        float getModulationIndex();
-        void setModulatorFreq(float ModulatorFreq);
-        float getModulatorFreq();
-    
+
+        // FM-specific methods
+        void addModulator(int index, std::string waveType, float freq, float amp, float modIndex, float samplerate);
+
+        // Override or extend methods
+        float getSample();
+
     protected:
-        float modulationIndex;
-        float modulatorFreq;
+        // Additional properties for FM synthesis
+        int numModulators;
+        Oscillator** modulatorBank;
+        float* modulationIndices;
 };
 
 #endif

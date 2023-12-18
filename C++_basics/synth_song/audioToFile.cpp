@@ -74,9 +74,6 @@ AudioToFile::~AudioToFile() {
 }
 
 void AudioToFile::write(CustomCallback& callback) {
-  // TODO - CODE REVIEW
-  // CODE BELOW IS HASTLY CODED ...
-
   AudioBuffer audioBuffer =
     AudioBuffer { .inputChannels = const_cast<const float**> (inputChannel),
                   .outputChannels = outputChannel,

@@ -1,48 +1,64 @@
 #include "fmsynth.h"
 
-FMSynth::FMSynth(std::string type, int numOsc, float freq, float amp, float samplerate) : Synth(type, numOsc, freq, amp, samplerate), modulationIndex(modulationIndex), modulatorFreq(modulatorFreq)
+FMSynth::FMSynth(int numCarriers, int numModulators) 
+    : Synth(numCarriers), numModulators(numModulators)
 {
-    std::cout << "FMSynth - constructor\n";
+    modulatorBank = new Oscillator*[numModulators];
+    modulationIndices = new float[numModulators];
+    // std::cout << "FMSynth - constructor\n";
 }
 
-FMSynth::~FMSynth() 
+FMSynth::~FMSynth()
 {
-    std::cout << "FMSynth - deconstructor\n";
+    for (int i = 0; i < numModulators; ++i) {
+        delete modulatorBank[i];
+    }
+    delete[] modulatorBank;
+    delete[] modulationIndices;
+    // std::cout << "FMSynth - deconstructor\n";
 }
 
-void FMSynth::calculate() {
-    // FM synthesis logic
-    float modulatorSample = sin(M_PI * 2 * p);
-
-    // Update the phase of the modulator oscillator
-    modulatorPhase += 2 * M_PI * modulatorFreq / getSamplerate();
-    while (modulatorPhase >= 2 * M_PI) {
-        modulatorPhase -= 2 * M_PI;
+void FMSynth::addModulator(int index, std::string waveType, float freq, float amp, float modIndex, float samplerate)
+{
+    // Create modulator oscillator based on waveType
+    if (waveType == "sine") {
+        modulatorBank[index] = new Sine(freq, amp, samplerate);
+    } else if (waveType == "square") {
+        modulatorBank[index] = new Square(freq, amp, samplerate);
+    } else if (waveType == "triangle") {
+        modulatorBank[index] = new Triangle(freq, amp, samplerate);
     }
 
-    // Apply frequency modulation
-    setFreq(getFreq() + modulationIndex * modulatorSample);
+    // Set the modulation index for this modulator
+    modulationIndices[index] = modIndex;
 
-    // Continue with the rest of the synthesis logic
-    Synth::calculate();
+    std::cout << "Added new " << waveType << " modulator with freq: " << freq << " and modulation index: " << modIndex << std::endl;
+    std::cout << std::endl;
 }
 
-void FMSynth::setModulationIndex(float modulationIndex) 
+// ChatGPT used to create FMSynth get sample formula
+float FMSynth::getSample()
 {
-    this->modulationIndex = modulationIndex;
-}
+    float sample = 0.0f;
 
-float FMSynth::getModulationIndex()
-{
-    return modulationIndex;
-}
+    // Loop through each carrier oscillator
+    for (int i = 0; i < numOscillators; ++i) {
+        float modulation = 0.0f;
 
-void FMSynth::setModulatorFreq(float modulatorFreq) 
-{
-    this->modulatorFreq = modulatorFreq;
-}
+        // Apply modulation from each modulator to the carrier
+        for (int j = 0; j < numModulators; ++j) {
+            modulation += modulatorBank[j]->getSample() * modulationIndices[j];
+        }
 
-float FMSynth::getModulatorFreq()
-{
-    return modulatorFreq;
+        // Adjust carrier frequency by modulation
+        float originalFreq = oscillatorBank[i]->getFreq();
+        oscillatorBank[i]->setFreq(originalFreq + modulation);
+
+        // Get the sample from the carrier
+        sample += oscillatorBank[i]->getSample();
+
+        // Reset the carrier frequency to its original value
+        oscillatorBank[i]->setFreq(originalFreq);
+    }
+    return sample;
 }

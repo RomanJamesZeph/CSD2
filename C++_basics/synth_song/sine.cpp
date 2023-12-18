@@ -4,13 +4,13 @@
 // Sine constructor
 Sine::Sine(float freq, float amp, float samplerate) : Oscillator(freq, amp, samplerate)
 {
-  std::cout << "Sine - constructor\n";
+  // std::cout << "Sine - constructor\n";
 }
 
 // Sine deconstructor
 Sine::~Sine()
 {
-  std::cout << "Sine - destructor\n";
+  // std::cout << "Sine - destructor\n";
 }
 
 // Method to calculate sine wave

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#define NUM_NOTES 10
+#define NUM_NOTES 100
 
 class Melody
 {
@@ -13,10 +13,11 @@ class Melody
 
         // setters and getters
         float getNote();
+        // ChatGPT used to generate generate random melody function
+        void generateRandomMelody();
 
-        protected:
-        // Cmaj7 -  arpeggio
-        float melody[NUM_NOTES] = {60, 64, 67, 71, 64, 67, 64, 69, 60, 55};
-        // the index of the current note - readIndex
+    protected:
+        float melody[NUM_NOTES];
         int index;
+
 };

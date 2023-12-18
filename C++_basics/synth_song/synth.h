@@ -11,15 +11,14 @@ class Synth
 {
     public:
         // constructor and deconstructor
-        Synth (int numOsc);
+        Synth (int numOscillators);
         ~Synth();
 
-        // adds an oscillator to the osccilator bank
         void addOscillator(int index, std::string waveType, float freq, float amp, float samplerate);
 
         //getters and setters
-        void setFreq(float freq);
-        float getSample();
+        virtual void setFreq(float freq);
+        virtual float getSample() = 0;
 
         // go to next sample
         void tick();
@@ -27,7 +26,7 @@ class Synth
     protected:
         // number of oscillators
         int numOscillators;
-
+        
         // creates an oscillator bank to store oscillators
         Oscillator** oscillatorBank;
 };

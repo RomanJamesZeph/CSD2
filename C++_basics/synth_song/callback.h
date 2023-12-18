@@ -1,18 +1,20 @@
 #ifndef CALLBACK_H
 #define CALLBACK_H
 
-// chatGPT used to write comments
+enum SynthType {
+    FM_SYNTH,
+    ADDITIVE_SYNTH
+};
+
+
+// chatGPT used to write comments and chosen synth type functionality
 
 // Including dependencies
 #include "jack_module.h"
 #include "synth.h"
-#include "oscillator.h"
-#include "sine.h"
-#include "triangle.h"
-#include "square.h"
-#include "melody.h"
-#include "additivesynth.h"
 #include "fmsynth.h"
+#include "additivesynth.h"
+#include "melody.h"
 #include "ui.h"
 
 // CustomCallback class definition
@@ -39,15 +41,20 @@ public:
 
 private:
     // Member variables
-    float samplerate = 44100;          // Default sample rate.
-    int numOscillators =  2;           // Number of oscillators to use.
-    float amplitude = 0.5;             // Amplitude for the sound synthesis.
+    float samplerate = 44100;          // Default sample rate.           
+    int numCarriers;               // Number of carriers to use.
+    int numModulators;             // Number of modulators to use.
+    float amplitude = 1;             // Amplitude for the sound synthesis.
     int frameIndex = 0;                // Index to keep track of the current frame.
-    double noteDelayFactor = 0.05;     // Factor to determine note delay.
+    double noteDelayFactor = 0.5;     // Factor to determine note delay.
     std::string waveFormOptions[3] = {"sine", "square", "triangle"}; // Waveform options.
     int numWaveFormOptions = 3;        // Number of waveform options available.
+    std::string synthTypeOptions[2] = {"fm", "additive"};
+    int numSynthTypeOptions = 2;
     UI console_ui;                     // User interface object for input handling.
-    AdditiveSynth mySynth;             // Synthesizer object for sound generation.
+    SynthType chosenSynthType;
+    FMSynth myFMSynth;
+    AdditiveSynth myAdditiveSynth;
     Melody melody;                     // Melody object to manage musical notes.
 };
 

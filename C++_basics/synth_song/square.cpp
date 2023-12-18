@@ -4,13 +4,13 @@
 // square constructor
 Square::Square(float freq, float amp, float samplerate) : Oscillator(freq, amp, samplerate)
 {
-  std::cout << "Square - constructor\n";
+  // std::cout << "Square - constructor\n";
 }
 
 // square deconstructor
 Square::~Square()
 {
-  std::cout << "Square - destructor\n";
+  // std::cout << "Square - destructor\n";
 }
 
 // Method to calculate square wave

@@ -10,12 +10,12 @@ Oscillator::Oscillator() : Oscillator (600, 0, 44100) //default values
 // initializer list
 Oscillator::Oscillator(float freq, float amp, float samplerate) : freq(freq), amp(amp), samplerate(samplerate)
 {
-    std::cout << "Oscillator - constructor\n";
+    // std::cout << "Oscillator - constructor\n";
 }
 
 Oscillator::~Oscillator()
 {
-
+    // std::cout << "Oscillator - deconstructor\n";
 }
 
 // method to set frequenty
