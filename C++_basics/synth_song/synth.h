@@ -17,7 +17,7 @@ class Synth
         void addOscillator(int index, std::string waveType, float freq, float amp, float samplerate);
 
         //getters and setters
-        virtual void setFreq(float freq);
+        void setFreq(float freq);
         virtual float getSample() = 0;
 
         // go to next sample
