@@ -3,7 +3,10 @@
 FMSynth::FMSynth(int numCarriers, int numModulators) 
     : Synth(numCarriers), numModulators(numModulators)
 {
+    // Add oscillator pointers to modulator bank
     modulatorBank = new Oscillator*[numModulators];
+
+    // Add floats to modulationindices 
     modulationIndices = new float[numModulators];
     // std::cout << "FMSynth - constructor\n";
 }

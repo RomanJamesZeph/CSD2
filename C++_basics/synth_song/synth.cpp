@@ -55,7 +55,7 @@ float Synth::getSample()
     float sample = 0.0f;
     for (int i = 0; i < numOscillators; ++i) {
         sample += oscillatorBank[i]->getSample();
-        std::cout << "Synth - getting sample\n";
+        // std::cout << "Synth - getting sample\n";
     }
     return sample;
 }

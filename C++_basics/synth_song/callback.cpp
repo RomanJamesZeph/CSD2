@@ -1,6 +1,6 @@
 #include "callback.h"
 
-// chatGPT used to write comments and chosen synth type functionality
+// ChatGPT used to write comments and chosen synth type functionality
 
 // Constructor of CustomCallback class.
 // Initializes the Synth object and adds oscillators based on user input.
@@ -38,7 +38,7 @@ CustomCallback::CustomCallback() : myFMSynth(1, 0), myAdditiveSynth(1)
             // Retrieve modulation frequency within a specified range from the user.
             float modFreq = console_ui.retrieveValueInRange("modulation frequency", 20, 20499);
 
-            // Retrieve modulation frequency within a specified range from the user.
+            // Retrieve modulation index within a specified range from the user.
             float modIndex = console_ui.retrieveValueInRange("modulation index", 0.1, 10);
 
             // Add modulator with specified type, frequency, amplitute, index and samplerate
@@ -113,6 +113,7 @@ void CustomCallback::prepare(int rate)
 
 void CustomCallback::process(AudioBuffer buffer) {
     for (int i = 0; i < buffer.numFrames; ++i) {
+        // Get sample and tick based on the synth type
         if (chosenSynthType == FM_SYNTH) {
             buffer.outputChannels[0][i] = myFMSynth.getSample();
             myFMSynth.tick();
