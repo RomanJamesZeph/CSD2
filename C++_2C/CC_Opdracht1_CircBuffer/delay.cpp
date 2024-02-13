@@ -7,7 +7,7 @@ Delay::Delay()
 
 Delay::~Delay()
 {
-  std::cout << "Delay - deconstructor\n";
+  std::cout << "Delay - destructor\n";
 }
 
 void Delay::setFeedback(float feedback)

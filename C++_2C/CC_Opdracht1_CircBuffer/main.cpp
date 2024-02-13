@@ -1,38 +1,41 @@
 #include <iostream>
 #include <thread>
+#include "jack_module.h"
+#include "math.h"
+#include "callback.h"
 #include "audioToFile.h"
-#include "circBuffer.h"
-#include "square.h"
 
-#define SAMPLERATE 44100
+/*
+ * NOTE: jack2 needs to be installed
+ * jackd invokes the JACK audio server daemon
+ * https://github.com/jackaudio/jackaudio.github.com/wiki/jackd(1)
+ * on mac, you can start the jack audio server daemon in the terminal:
+ * jackd -d coreaudio
+ */
 
-int main(int argc,char **argv)
-{
-  // set delay to a quarter cycle
-  int cycleFrameLength = 80;
-  CircBuffer circBuffer(cycleFrameLength / 4);
+#define WRITE_TO_FILE 1
 
-  // init square oscillator based on cycle lengths
-  float freq = (float) SAMPLERATE / cycleFrameLength;
-  Square square(freq, SAMPLERATE);
 
-  WriteToFile fileWriter("output.csv", true);
+int main(int argc, char **argv) {
+  auto callback = CustomCallback{};
+  auto jackModule = JackModule{callback};
 
-  // generate 200 samples
-  // TODO - write sum of output of both the square directly and the circBuffer to a file
-  float squareSample = 0;
-  for(int i = 0; i < 200; i++) {
-    squareSample = square.genNextSample();
-    fileWriter.write(std::to_string(squareSample) + "\n");
-    // TODO - 'plugin' the cicbuffer
+#if WRITE_TO_FILE
+  AudioToFile audioToFile;
+  audioToFile.write(callback);
+#else
 
+  jackModule.init(0, 1);
+
+  bool running = true;
+  while (running) {
+    switch (std::cin.get()) {
+      case 'q':
+        running = false;
+    }
   }
-
-  std::cout << "\n***** DONE ***** "
-    << "\nWrote the sum of the a sine oscillator and a "
-    << "delayed value to output.csv." << std::endl;
-
+#endif
   //end the program
   return 0;
-
 } // main()
+
