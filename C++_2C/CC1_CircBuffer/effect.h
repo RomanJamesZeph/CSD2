@@ -1,22 +1,38 @@
-#include <iostream>
+#pragma once
 
 class Effect
 {
-    public:
-        Effect(float dryWet = 1.0);
-        virtual ~Effect();
-        virtual void prepare(float rate) {};
+public:
+  // drywet: drywet balance
+  // drywet == 0:     dry
+  // 0 < drywet < 1:  mix
+  // drywet == 1:     wet
+  // default is wet
+  Effect(float dryWet = 1.0);
+  virtual ~Effect();
 
+  // not pure virtual, since not all subclasses require the samplerate
+  virtual void prepare(float samplerate) { }
+  // process frame
+  void processFrame(const float &input, float &output);
+  // returns the last outputted sample
+  float getSample();
 
-        float processFrame(float input);
+  void setDryWet(float dryWet);
 
-        // setters & getters
-        void setDryWet(float dryWet);
+protected:
+  // pure virtual method
+  virtual void applyEffect(const float &input, float &output) = 0;
 
-    protected:
-        // abstract method
-        virtual float applyEffect(float input) = 0;
-    private:
-        float dry;
-        float wet;
+private:
+  // balance between dry and wet signal
+  float dryWet;
+  float wetDry; // = 1 - dryWet
+  // cache last sample
+  float m_sample;
+  /*
+   * NOTE: other possible extra base class functionality:
+   * • bypass
+   */
+
 };

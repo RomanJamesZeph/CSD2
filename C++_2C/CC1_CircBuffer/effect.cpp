@@ -1,34 +1,34 @@
 #include "effect.h"
+#include <iostream>
 
-Effect::Effect(float dryWet)
-{
+Effect::Effect(float dryWet) {
   setDryWet(dryWet);
-  std::cout << "Effect - constructor\n";
 }
 
-Effect::~Effect()
+Effect::~Effect() {}
+
+// process frame
+void Effect::processFrame(const float &input, float &output)
 {
-  std::cout << "Effect - destructor\n";
+  // TODO - add bypass functionality
+  applyEffect(input, output);
+  output = input * wetDry + output * dryWet;
+  // cache output samples
+  m_sample = output;
 }
 
-float Effect::processFrame(float input) {
-  float output = applyEffect(input);
-
-  float wetOutput = output * wet;
-  float dryOutput = input * dry;
-  output = wetOutput + dryOutput;
-  return output;
+// returns the last outputted sample
+float Effect::getSample()
+{
+  return m_sample;
 }
 
 void Effect::setDryWet(float dryWet)
 {
-  if (dryWet >= 0.0f && dryWet <= 1.0f)
-  {
-    wet = dryWet;
-    dry = 1.0f - dryWet;
-  } 
-  else 
-  {
-    std::cout << "Error - Wet/Dry wrong value\n";
+  if(dryWet < 0 || dryWet > 1) {
+    throw "Effect::setDryWet - dryWet value is not in range [0, 1]";
   }
+  this->dryWet = dryWet;
+  // cache 1.0 - dryWet used to calculate mix of dry wet signal
+  wetDry = 1.0f - dryWet;
 }

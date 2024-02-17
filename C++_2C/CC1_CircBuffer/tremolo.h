@@ -18,7 +18,7 @@ public:
 private:
   float modDepth;
   Sine sine;
-  float applyEffect(float sample) override;
+  void applyEffect(const float &input, float &output) override;
   // hide default constructor
   Tremolo(){}
 };
