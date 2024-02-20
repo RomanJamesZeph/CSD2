@@ -14,6 +14,7 @@ public:
 
   // setters and getters
   void setModFreq(float freq);
+  void setModDepth(float modDepth);
 
 private:
   float modDepth;
