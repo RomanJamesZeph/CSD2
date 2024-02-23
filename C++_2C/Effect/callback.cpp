@@ -84,7 +84,7 @@ void CustomCallback::process(AudioBuffer buffer)
       else if (effectTypeSelection == 2)
       {
         // std::cout << "Waveshaper";
-        waveshaper.processFrame(inputChannels[channel][i],  outputChannels[channel][i]);
+        waveshaper.processFrame(sine.genNextSample(),  outputChannels[channel][i]);
       }
     }
   }

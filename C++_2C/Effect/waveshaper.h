@@ -3,6 +3,8 @@
 #include <iostream>
 #include "effect.h"
 
+#define BUFFER_SIZE 512
+
 class Waveshaper : public Effect 
 {
     public:
@@ -13,4 +15,5 @@ class Waveshaper : public Effect
         
     private:
         float saturation;
+        float buffer[BUFFER_SIZE];
 };

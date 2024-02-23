@@ -16,11 +16,12 @@
  * jackd -d coreaudio
  */
 
-#define WRITE_TO_FILE 0
+#define WRITE_TO_FILE 1
 
 
 int main(int argc, char **argv) {
   auto callback = CustomCallback{};
+  callback.prepare(44100);
   auto jackModule = JackModule{callback};
 
 #if WRITE_TO_FILE
