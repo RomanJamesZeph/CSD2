@@ -6,6 +6,7 @@
 #include "tremolo.h"
 #include "delay.h"
 #include "waveshaper.h"
+#include "chorus.h"
 
 
 class CustomCallback : public AudioCallback {
