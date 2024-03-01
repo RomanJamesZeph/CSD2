@@ -17,9 +17,10 @@ public:
 private:
   float samplerate = 44100;
   Sine sine = Sine(400, samplerate);
-  Tremolo tremolo = Tremolo(6, 1);
-  Waveshaper waveshaper;
+  // Tremolo tremolo = Tremolo(6, 1);
+  // Waveshaper waveshaper;
   Delay delay;
+  Chorus chorus;
 };
 
 #endif //CALLBACK_H

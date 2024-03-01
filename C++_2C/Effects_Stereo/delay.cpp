@@ -7,6 +7,7 @@ Delay::Delay(float feedback, uint numDelaySamples,
   m_size(maxDelaySize), m_readH(0), m_writeH(0)
 {
   std::cout << "Delay Constructor" << std::endl;
+  
   // validate delay size and numDelaySamples
   if(numDelaySamples > maxDelaySize) {
     throw "Delay::Delay - numDelaySamples exceeds maxDelaySize";
@@ -32,6 +33,7 @@ Delay::~Delay()
 void Delay::applyEffect(const float &input, float &output)
 {
   // read value from circular buffer and increment readH
+  std::cout << "m_buffer: " << m_buffer[m_readH++] << std::endl;
   output = m_buffer[m_readH++];
   wrapH(m_readH);
   // write value to circular buffer
