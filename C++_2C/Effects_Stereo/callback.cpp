@@ -13,8 +13,8 @@ void CustomCallback::process(AudioBuffer buffer)
   float sample;
   // for (int channel = 0u; channel < numOutputChannels; channel++) {
     for (int i = 0u; i < numFrames; i++){
-      chorus.processFrame(inputChannels[0][i],  outputChannels[0][i]);
-      chorus.processFrame(inputChannels[0][i],  outputChannels[1][i]);
+      bitCrusher.processFrame(inputChannels[0][i],  outputChannels[0][i]);
+      bitCrusher.processFrame(inputChannels[0][i],  outputChannels[1][i]);
     }
   // }
 }

@@ -7,6 +7,7 @@
 #include "delay.h"
 #include "waveshaper.h"
 #include "chorus.h"
+#include "bitcrusher.h"
 
 
 class CustomCallback : public AudioCallback {
@@ -20,7 +21,9 @@ private:
   // Tremolo tremolo = Tremolo(6, 1);
   // Waveshaper waveshaper;
   // Delay delay;
-  Chorus chorus;
+  // Chorus chorus;
+  BitCrusher bitCrusher = BitCrusher(6, 1);
+
 };
 
 #endif //CALLBACK_H
