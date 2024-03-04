@@ -19,7 +19,7 @@ private:
   Sine sine = Sine(400, samplerate);
   // Tremolo tremolo = Tremolo(6, 1);
   // Waveshaper waveshaper;
-  Delay delay;
+  // Delay delay;
   Chorus chorus;
 };
 
